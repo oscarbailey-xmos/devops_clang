@@ -3337,7 +3337,8 @@ RValue CodeGenFunction::EmitBuiltinExpr(const FunctionDecl *FD,
 
     // Create a temporary array to hold the sizes of local pointer arguments
     // for the block. \p First is the position of the first size argument.
-    auto CreateArrayForSizeVar = [=](unsigned First) {
+    auto CreateArrayForSizeVar = [=](unsigned First)
+        -> std::tuple<llvm::Value *, llvm::Value *, llvm::Value *> {
       llvm::APInt ArraySize(32, NumArgs - First);
       QualType SizeArrayTy = getContext().getConstantArrayType(
           getContext().getSizeType(), ArraySize, ArrayType::Normal,
